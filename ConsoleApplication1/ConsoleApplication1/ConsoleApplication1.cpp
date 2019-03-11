@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
 {
 	if (argc != 3)
 	{
+		//Should tell user that they need to input two strings, then terminate.
 		try
 		{
 			throw std::invalid_argument("Accepts an argument of two strings only.\n");
