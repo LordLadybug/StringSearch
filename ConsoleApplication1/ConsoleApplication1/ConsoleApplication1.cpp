@@ -2,13 +2,34 @@
 //
 
 #include "pch.h"
-#include <iostream>
+#include <string>
+#include <stdexcept>
 
-int main()
+bool CompareForSubstrings(std::string string1, std::string string2);
+
+int main(int argc, char *argv[])
 {
-    std::cout << "Hello World!\n"; 
+	if (argc != 3)
+	{
+		throw std::invalid_argument("Accepts an argument of two strings only.\n");
+	}
+	else
+	{
+		//execute the rest of the program here
+		std::string string1 = argv[1];
+		std::string string2 = argv[2];
+		//check for substrings here first using own algorithm
+		CompareForSubstrings(string1, string2);
+		//then use substr library function for same two strings to verify algorithm works correctly
+	}
 }
 
+bool CompareForSubstrings(std::string string1, std::string string2) 
+{
+	//place implementation for checking if second string is a substring of the first
+	bool SubstringFlag; //return value for function; used to keep track of if string 2 is in fact a substring
+	return SubstringFlag;
+}
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
 
