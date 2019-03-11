@@ -2,6 +2,7 @@
 //
 
 #include "pch.h"
+#include <iostream>
 #include <string>
 #include <stdexcept>
 
@@ -11,7 +12,16 @@ int main(int argc, char *argv[])
 {
 	if (argc != 3)
 	{
-		throw std::invalid_argument("Accepts an argument of two strings only.\n");
+		try
+		{
+			throw std::invalid_argument("Accepts an argument of two strings only.\n");
+			//std::cout << std::exception::what();
+			return -1;
+		}
+		catch (const std::exception&)
+		{
+			return -1;
+		}
 	}
 	else
 	{
@@ -27,7 +37,7 @@ int main(int argc, char *argv[])
 bool CompareForSubstrings(std::string string1, std::string string2) 
 {
 	//place implementation for checking if second string is a substring of the first
-	bool SubstringFlag; //return value for function; used to keep track of if string 2 is in fact a substring
+	bool SubstringFlag = false; //return value for function; used to keep track of if string 2 is in fact a substring
 	return SubstringFlag;
 }
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
