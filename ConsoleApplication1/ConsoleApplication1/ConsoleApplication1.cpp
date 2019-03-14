@@ -39,15 +39,15 @@ int main(int argc, char *argv[])
 	}
 }
 
-std::tuple<std::string::iterator, std::string::iterator> FirstCharFinder(std::string string1, std::string string2)	//after an astericks, finds first matching character in two strings
+std::tuple<std::string::iterator, std::string::iterator> FirstCharFinder(std::string string1, std::string string2, std::string::iterator String1Searcher, std::string::iterator String2Grabber)	//after an astericks, finds first matching character in two strings
 {
-	std::string::iterator String2Grabber = string2.begin();
+	//std::string::iterator String2Grabber = string2.begin();
 	char& firstCharacter = string2.front();
 	if (firstCharacter == '*')
 	{
 		firstCharacter = String2Grabber._Getpnext(); //if string2 begins with wildcard, grab the second character in string2 instead
 	}
-	std::string::iterator String1Searcher = string1.begin(); //initialize to start of string 1
+	//std::string::iterator String1Searcher = string1.begin(); //initialize to start of string 1
 	do
 	{
 		if (&String1Searcher == firstCharacter)
@@ -68,16 +68,18 @@ bool CompareForSubstrings(std::string string1, std::string string2)
 	std::string::iterator String2Grabber = string2.begin();
 	char& firstCharacter = string2.front();
 	std::string::iterator String1Searcher = string1.begin(); //initialize to start of string 1
-	<String1Searcher, String2Grabber> = FirstCharFinder(std::string string1, std::string string2);
+	<String1Searcher, String2Grabber> = FirstCharFinder(string1, string2, String1Searcher, String2Grabber);
 	
 	//Proceed to search through next characters
 	while (&String1Searcher == &String2Grabber && String2Grabber != string2.end())
 	{
+		//iterates through rest of characters until string2 encounters an astericks or end of string
 		String2Grabber++;
 		String1Searcher++;
 		if (&String2Grabber == '*')
 		{
-			String1Searcher++;
+			<String1Searcher, String2Grabber> = FirstCharFinder(string1, string2, String1Searcher, String2Grabber);
+			//after finding the first index that occurs after the wild card, should be able to keep going until end of string2
 		}
 	}
 	return SubstringFlag;
