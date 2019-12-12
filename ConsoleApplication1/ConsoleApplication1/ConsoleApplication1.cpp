@@ -5,10 +5,13 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
-#include <iterator>
-#include <tuple>
 
-std::tuple<std::string::iterator, std::string::iterator> FirstCharFinder(std::string string1, std::string string2);
+struct IndexPair
+{
+	int Index1 = 0;
+	int Index2 = 0;
+};
+IndexPair FirstCharFinder(std::string string1, std::string string2);
 bool CompareForSubstrings(std::string string1, std::string string2);
 
 int main(int argc, char *argv[])
@@ -27,59 +30,62 @@ int main(int argc, char *argv[])
 			return -1;
 		}
 	}
-
 	else
 	{
 		//execute the rest of the program here
 		std::string string1 = argv[1];
 		std::string string2 = argv[2];
-		//check for substrings here first using own algorithm
+		//check for substrings here using functions below
 		CompareForSubstrings(string1, string2);
-		//then use substr library function for same two strings to verify algorithm works correctly
 	}
 }
 
-std::tuple<std::string::iterator, std::string::iterator> FirstCharFinder(std::string string1, std::string string2, std::string::iterator String1Searcher, std::string::iterator String2Grabber)	//after an astericks, finds first matching character in two strings
+IndexPair FirstCharFinder(std::string string1, std::string string2)
 {
-	//std::string::iterator String2Grabber = string2.begin();
-	char& firstCharacter = string2.front();
+	char& firstCharacter = string2[0];
+	int String2Grabber = 0;
+	int String1Searcher = 0;
 	if (firstCharacter == '*')
 	{
-		firstCharacter = String2Grabber._Getpnext(); //if string2 begins with wildcard, grab the second character in string2 instead
+		String2Grabber++;//if string2 begins with wildcard, grab the second character in string2 instead
+		firstCharacter = string2[String2Grabber];
 	}
-	//std::string::iterator String1Searcher = string1.begin(); //initialize to start of string 1
 	do
 	{
-		if (&String1Searcher == firstCharacter)
+		if (string1[String1Searcher] != firstCharacter)
 		{
-			//Set to next character in each string, then continue with search outside of this while loop
-			String2Grabber++;
+			//Skip to next character in String1
 			String1Searcher++;
 		}
-	} while (&String1Searcher != firstCharacter && String1Searcher != string1.begin());//Stops either upon finding a matching character to firstCharacter or the end of string1, whichever comes first
+	} while (string1[String1Searcher] != firstCharacter && string1[String1Searcher] != '\0');//Stops either upon finding a matching character to firstCharacter or the end of string1, whichever comes first
+	IndexPair firstChar;
+	firstChar.Index1= String1Searcher;
+	firstChar.Index2= String2Grabber;
 }
 
-bool CompareForSubstrings(std::string string1, std::string string2) 
+bool CompareForSubstrings(std::string string1, std::string string2)
 {
 	//place implementation for checking if second string is a substring of the first
 	bool SubstringFlag = false; //return value for function; used to keep track of if string 2 is in fact a substring
 	
-	//grab first character of string2, then search string1 for same character
-	std::string::iterator String2Grabber = string2.begin();
-	char& firstCharacter = string2.front();
-	std::string::iterator String1Searcher = string1.begin(); //initialize to start of string 1
-	<String1Searcher, String2Grabber> = FirstCharFinder(string1, string2, String1Searcher, String2Grabber);
-	
+	//start by running the first character finder
+	IndexPair FirstChar = FirstCharFinder(string1, string2);
+	int String1Searcher = FirstChar.Index1;
+	int String2Grabber = FirstChar.Index2;
 	//Proceed to search through next characters
-	while (&String1Searcher == &String2Grabber && String2Grabber != string2.end())
+	while (string1[String1Searcher] == string2[String2Grabber] && string1[String1Searcher] != '\0')
 	{
 		//iterates through rest of characters until string2 encounters an astericks or end of string
-		String2Grabber++;
 		String1Searcher++;
-		if (&String2Grabber == '*')
+		String2Grabber++;
+		if (string2[String2Grabber] == '*')
 		{
-			<String1Searcher, String2Grabber> = FirstCharFinder(string1, string2, String1Searcher, String2Grabber);
+			FirstChar = FirstCharFinder(string1Clipped, string2Clipped);
 			//after finding the first index that occurs after the wild card, should be able to keep going until end of string2
+		}
+		if (string2[String2Grabber] == '\0') {
+			bool SubstringFlag = true;
+			return SubstringFlag;
 		}
 	}
 	return SubstringFlag;
